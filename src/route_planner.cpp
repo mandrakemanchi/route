@@ -68,6 +68,14 @@ RouteModel::Node *RoutePlanner::NextNode() {
             next_node =i;
             least = cost;
         }
+        
+    }
+    int k = 0;
+    for (auto j:open_list)
+    {   if (j->g_value + j->h_value == least)
+          {  open_list.erase(open_list.begin()+k);
+            break;}
+        k++;
     }
     return next_node;
 }
@@ -90,7 +98,7 @@ std::vector<RouteModel::Node> RoutePlanner::ConstructFinalPath(RouteModel::Node 
     RouteModel::Node * p_node = current_node->parent;
     distance = current_node->distance(*current_node->parent);
     
-    while (p_node!= nullptr)
+    while (p_node!= nullptr&&p_node->parent!=nullptr)
     {
     path_found.push_back(*p_node);
     distance += p_node->distance(*p_node->parent);
@@ -114,7 +122,15 @@ std::vector<RouteModel::Node> RoutePlanner::ConstructFinalPath(RouteModel::Node 
 
 void RoutePlanner::AStarSearch() {
     RouteModel::Node *current_node = nullptr;
-
+    std::vector<RouteModel::Node> final_path;
+    open_list.push_back(start_node);
     // TODO: Implement your solution here.
-
+    while(current_node->distance(*this->end_node)!=0)
+    {
+        current_node = NextNode();
+        AddNeighbors(current_node);
+    
+    }
+    final_path = ConstructFinalPath(current_node);
+    m_Model.path = final_path;
 }
