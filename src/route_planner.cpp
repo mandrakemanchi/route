@@ -123,6 +123,7 @@ std::vector<RouteModel::Node> RoutePlanner::ConstructFinalPath(RouteModel::Node 
 void RoutePlanner::AStarSearch() {
     RouteModel::Node *current_node = nullptr;
     std::vector<RouteModel::Node> final_path;
+    current_node = start_node;
     open_list.push_back(start_node);
     // TODO: Implement your solution here.
     while(current_node->distance(*this->end_node)!=0)
